@@ -47,6 +47,7 @@
 **/
 
 #import "DDLog.h"
+#import "DDLogMacros.h"
 
 // Define logging context for every log message coming from the HTTP server.
 // The logging context can be extracted from the DDLogMessage from within the logging framework,
@@ -96,6 +97,9 @@
 #define HTTP_LOG_ASYNC_TRACE   (YES && HTTP_LOG_ASYNC_ENABLED)
 
 // Define logging primitives.
+
+#define LOG_OBJC_MAYBE(async, lvl, flg, ctx, frmt, ...) \
+do{ if(HTTP_LOG_ASYNC_ENABLED) LOG_MAYBE(async, lvl, flg, ctx, nil, sel_getName(_cmd), frmt, ##__VA_ARGS__); } while(0)
 
 #define HTTPLogError(frmt, ...)    LOG_OBJC_MAYBE(HTTP_LOG_ASYNC_ERROR,   httpLogLevel, HTTP_LOG_FLAG_ERROR,  \
                                                   HTTP_LOG_CONTEXT, frmt, ##__VA_ARGS__)
